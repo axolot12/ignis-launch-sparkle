@@ -8,7 +8,6 @@ import {
   Package,
   Shield,
   Sparkles,
-  Flame,
   MessageCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -66,11 +65,6 @@ const FEATURES = [
     icon: Sparkles,
     title: "Smooth & Lightweight",
     desc: "Built for performance. Minimal RAM usage, instant launches, zero bloat.",
-  },
-  {
-    icon: Flame,
-    title: "Made by IgnisTeam",
-    desc: "Crafted with passion by the IgnisTeam. Constantly updated with new features the community asks for.",
   },
   {
     icon: Sparkles,
@@ -147,7 +141,7 @@ function Home() {
       <div className="pointer-events-none absolute top-[-12rem] left-1/2 -translate-x-1/2 w-[44rem] h-[44rem] rounded-full bg-gradient-brand opacity-20 blur-3xl animate-drift" />
       <div className="pointer-events-none absolute bottom-[-10rem] right-[-6rem] w-[28rem] h-[28rem] rounded-full bg-gradient-brand opacity-15 blur-3xl animate-drift" />
 
-      <main className="relative z-10 mx-auto max-w-6xl px-6 pt-32 pb-12 sm:pt-40 sm:pb-20">
+      <main className="relative z-10 w-full px-6 sm:px-10 pt-32 pb-12 sm:pt-40 sm:pb-20">
         {/* Hero */}
         <section className="flex flex-col items-center text-center">
           <div ref={heroLogoRef}>
