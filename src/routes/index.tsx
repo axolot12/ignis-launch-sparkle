@@ -72,6 +72,11 @@ const FEATURES = [
     title: "Made by IgnisTeam",
     desc: "Crafted with passion by the IgnisTeam. Constantly updated with new features the community asks for.",
   },
+  {
+    icon: Sparkles,
+    title: "Premium Tab Logo",
+    desc: "Tab logo are visible for all the users that are using our Ignis Launcher.",
+  },
 ];
 
 function Home() {
@@ -156,7 +161,7 @@ function Home() {
             />
           </div>
 
-          <AnimatedTitle text="Ignis Launcher" />
+          <AnimatedTitle text="IGNIS LAUNCHER" />
 
           <p
             className="mt-6 max-w-xl text-base sm:text-lg text-foreground/80 animate-float-up"
@@ -217,7 +222,7 @@ function Home() {
         {/* Features */}
         <section id="features" className="mt-32 sm:mt-40 scroll-mt-24">
           <h2 className="text-center text-3xl sm:text-5xl font-black text-gradient-brand">
-            Forged for Players
+            PROVIDED FEATURES
           </h2>
           <p className="mt-4 text-center text-foreground/70 max-w-xl mx-auto">
             Every feature you need to play, mod, and connect — wrapped in a launcher that just works.
