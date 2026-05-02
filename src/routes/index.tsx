@@ -126,13 +126,9 @@ export default function Home() {
                 }`}
                 aria-live="polite"
               >
-                {count === null ? (
-                  <span className="inline-block w-32 h-12 rounded-md bg-foreground/10 animate-pulse" />
-                ) : (
-                  count.toLocaleString()
-                )}
+                {count.toLocaleString()}
               </div>
-              <div className="mt-1 text-xs text-foreground/60">Updates live</div>
+              <div className="mt-1 text-xs text-foreground/60">Community downloads</div>
             </div>
           </div>
 
