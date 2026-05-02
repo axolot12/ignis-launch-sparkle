@@ -13,6 +13,7 @@ import { ParticleBackground } from "@/components/ParticleBackground";
 import { AnimatedTitle } from "@/components/AnimatedTitle";
 import { Navbar } from "@/components/Navbar";
 import logo from "@/assets/ignis-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 
 const DOWNLOAD_URL =
   "https://github.com/axolot12/traing/releases/download/v1.0/launcher.exe";
@@ -53,10 +54,40 @@ const FEATURES = [
 ];
 
 export default function Home() {
-  const [count, setCount] = useState(() => Number(localStorage.getItem("ignis-downloads") || "1247"));
+  const [count, setCount] = useState<number>(0);
   const [pulsing, setPulsing] = useState(false);
   const heroLogoRef = useRef<HTMLDivElement>(null);
   const [shrunk, setShrunk] = useState(false);
+
+  // Load + subscribe to live download count
+  useEffect(() => {
+    let mounted = true;
+    supabase
+      .from("download_stats")
+      .select("count")
+      .eq("id", 1)
+      .single()
+      .then(({ data }) => {
+        if (mounted && data) setCount(Number(data.count));
+      });
+
+    const channel = supabase
+      .channel("download_stats")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "download_stats" },
+        (payload) => {
+          const next = (payload.new as { count: number }).count;
+          if (typeof next === "number") setCount(next);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      mounted = false;
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Detect when hero logo scrolls out
   useEffect(() => {
@@ -70,14 +101,11 @@ export default function Home() {
     return () => obs.disconnect();
   }, []);
 
-  const handleDownloadClick = () => {
-    setCount((current) => {
-      const next = current + 1;
-      localStorage.setItem("ignis-downloads", String(next));
-      return next;
-    });
+  const handleDownloadClick = async () => {
     setPulsing(true);
     window.setTimeout(() => setPulsing(false), 500);
+    const { data } = await supabase.rpc("increment_downloads");
+    if (typeof data === "number") setCount(data);
   };
 
   return (
