@@ -23,7 +23,7 @@ export function Navbar() {
         scrolled ? "glass-strong py-3" : "py-5"
       }`}
     >
-      <nav className="mx-auto max-w-6xl px-6 flex items-center justify-between">
+      <nav className="w-full px-6 sm:px-10 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2 group">
           <img
             src={logo}
