@@ -8,7 +8,6 @@ import {
   Package,
   Shield,
   Sparkles,
-  Flame,
   MessageCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
