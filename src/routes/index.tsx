@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Download,
@@ -10,30 +9,10 @@ import {
   Sparkles,
   MessageCircle,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { AnimatedTitle } from "@/components/AnimatedTitle";
 import { Navbar } from "@/components/Navbar";
 import logo from "@/assets/ignis-logo.png";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Ignis Launcher — The Fastest Minecraft Launcher" },
-      {
-        name: "description",
-        content:
-          "Ignis Launcher: multi-version support, built-in Modrinth, friends system for cracked & premium accounts. Made by IgnisTeam.",
-      },
-      { property: "og:title", content: "Ignis Launcher" },
-      {
-        property: "og:description",
-        content: "The fastest, most beautiful Minecraft launcher. Mods, friends, and more.",
-      },
-    ],
-  }),
-  component: Home,
-});
 
 const DOWNLOAD_URL =
   "https://github.com/axolot12/traing/releases/download/v1.0/launcher.exe";
@@ -73,45 +52,11 @@ const FEATURES = [
   },
 ];
 
-function Home() {
-  const [count, setCount] = useState<number | null>(null);
+export default function Home() {
+  const [count, setCount] = useState(() => Number(localStorage.getItem("ignis-downloads") || "1247"));
   const [pulsing, setPulsing] = useState(false);
   const heroLogoRef = useRef<HTMLDivElement>(null);
   const [shrunk, setShrunk] = useState(false);
-
-  // Fast initial load + realtime updates
-  useEffect(() => {
-    let mounted = true;
-
-    const load = async () => {
-      const { data } = await supabase
-        .from("download_stats")
-        .select("count")
-        .eq("id", 1)
-        .maybeSingle();
-      if (mounted && data) setCount(Number(data.count));
-    };
-    load();
-
-    const channel = supabase
-      .channel("download_stats_realtime")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "download_stats" },
-        (payload) => {
-          const next = Number((payload.new as { count: number }).count);
-          setCount(next);
-          setPulsing(true);
-          setTimeout(() => setPulsing(false), 500);
-        }
-      )
-      .subscribe();
-
-    return () => {
-      mounted = false;
-      supabase.removeChannel(channel);
-    };
-  }, []);
 
   // Detect when hero logo scrolls out
   useEffect(() => {
@@ -125,11 +70,14 @@ function Home() {
     return () => obs.disconnect();
   }, []);
 
-  // Fire-and-forget increment; let the <a> handle navigation natively
   const handleDownloadClick = () => {
-    supabase.rpc("increment_downloads").then(({ data }) => {
-      if (typeof data === "number") setCount(data);
+    setCount((current) => {
+      const next = current + 1;
+      localStorage.setItem("ignis-downloads", String(next));
+      return next;
     });
+    setPulsing(true);
+    window.setTimeout(() => setPulsing(false), 500);
   };
 
   return (
