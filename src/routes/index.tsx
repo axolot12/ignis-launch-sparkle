@@ -68,11 +68,6 @@ const FEATURES = [
     desc: "Built for performance. Minimal RAM usage, instant launches, zero bloat.",
   },
   {
-    icon: Flame,
-    title: "Made by IgnisTeam",
-    desc: "Crafted with passion by the IgnisTeam. Constantly updated with new features the community asks for.",
-  },
-  {
     icon: Sparkles,
     title: "Premium Tab Logo",
     desc: "Tab logo are visible for all the users that are using our Ignis Launcher.",
